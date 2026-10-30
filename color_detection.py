@@ -1,27 +1,23 @@
 import cv2
-image=input("Enter the name of the image file with extension: ")
-# Load an image
-image_path = input("Enter the image filename: ")
-image = cv2.imread(image_path)
+import matplotlib.pyplot as plt
 
-if image is None:
-    print("Error: Could not load image. Check the filename and path.")
-    raise SystemExit
 
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-pixels = image.reshape(-1, 3)
-print(pixels.shape)
-# Check if the image was loaded successfully
-if image is None:
-    print("Error: Could not load image.")
-else:
-    # Display the image
-    cv2.imshow("Clothing Image", image)
-    cv2.waitKey(0)  # Wait for a key press to close the window
-    cv2.destroyAllWindows()
+image_path = input("Enter the image filename or path: ").strip()
 
-    import matplotlib.pyplot as plt
+# OpenCV loads images in BGR format. If the path is invalid, it returns None.
+image_bgr = cv2.imread(image_path)
 
-plt.imshow(image)
-plt.axis("off")  # Hide axes
+if image_bgr is None:
+    print("Could not load the image. Check that the filename and path are correct.")
+    raise SystemExit(1)
+
+# Convert to RGB for correct display with Matplotlib.
+image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+
+# Each row contains one pixel as [red, green, blue].
+pixels = image_rgb.reshape(-1, 3)
+print("Pixel array shape:", pixels.shape)
+
+plt.imshow(image_rgb)
+plt.axis("off")
 plt.show()
